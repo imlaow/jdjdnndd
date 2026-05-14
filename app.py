@@ -36,29 +36,29 @@ STYLE_KEYWORDS = {
         "suffix": ""
     },
     "Standard Quality": {
-        "prefix": "(RAW photo:1.3), (photorealistic:1.4), (hyperrealistic:1.3), 8k uhd, (ultra realistic skin texture:1.2), cinematic lighting, vibrant colors,masterpiece, realistic skin texture, detailed anatomy, professional photography",
-        "suffix": "sharp focus, (everything in focus:1.3), (no bokeh:1.2), realistic skin texture, subsurface scattering, detailed anatomy, (perfect anatomy:1.2),detailed face, detailed background, lifelike, professional photography, realistic proportions,  (detailed face:1.1), natural pose,expressive eyes, 8k resolution"
+        "prefix": "(RAW photo:1.3), (photorealistic:1.4), (hyperrealistic:1.3), 8k uhd, (ultra realistic skin texture:1.2), cinematic lighting, vibrant colors,masterpiece, realistic skin texture, detailed anatomy, professional photography, (sharp focus:1.4), (ultra detailed:1.3), (intricate details:1.2)",
+        "suffix": "sharp focus, (everything in focus:1.3), (no bokeh:1.2), realistic skin texture, subsurface scattering, (detailed anatomy:1.4), (perfect anatomy:1.4), (anatomically correct:1.3), detailed face, detailed background, lifelike, professional photography, realistic proportions, (detailed face:1.1), natural pose, expressive eyes, (sharp eyes:1.3), (detailed eyes:1.2), (detailed legs:1.3), (detailed arms:1.2), (perfect hands:1.2), (perfect feet:1.2), 8k resolution, high detail, ultra detail"
     },
     "High Detail": {
-        "prefix": "masterpiece, best quality, amazing quality, very aesthetic, high resolution, ultra-detailed, absurdres, newest, colorful, rim light, backlit, highest detailed",
-        "suffix": ""
+        "prefix": "masterpiece, best quality, amazing quality, very aesthetic, high resolution, ultra-detailed, absurdres, newest, colorful, rim light, backlit, highest detailed, (sharp focus:1.4), (ultra detailed:1.3), (intricate details:1.2), (fine details:1.2)",
+        "suffix": "(detailed anatomy:1.4), (perfect anatomy:1.4), (anatomically correct:1.3), (sharp eyes:1.3), (detailed eyes:1.2), (detailed legs:1.3), (detailed arms:1.2), (perfect hands:1.2), (perfect feet:1.2), high detail, ultra detail, intricate, fine texture"
     },
     "Realistic": {
-        "prefix": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, (photorealistic:1.3), (realistic:1.4), detailed skin texture, cinematic lighting",
-        "suffix": "sharp focus, detailed anatomy, realistic proportions, detailed face, natural pose, expressive eyes, 8k resolution"
+        "prefix": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, (photorealistic:1.3), (realistic:1.4), detailed skin texture, cinematic lighting, (sharp focus:1.4), (ultra detailed:1.3), (intricate details:1.2)",
+        "suffix": "sharp focus, (detailed anatomy:1.4), (perfect anatomy:1.4), realistic proportions, detailed face, natural pose, expressive eyes, (sharp eyes:1.3), (detailed eyes:1.2), (detailed legs:1.3), (detailed arms:1.2), (perfect hands:1.2), (perfect feet:1.2), 8k resolution, high detail, ultra detail"
     },
     "Anime": {
-        "prefix": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, anime style, vibrant colors, detailed anime",
-        "suffix": "cel shading, clean linework, vibrant anime colors, detailed anime eyes, smooth anime skin"
+        "prefix": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, anime style, vibrant colors, detailed anime, (sharp focus:1.4), (ultra detailed:1.3)",
+        "suffix": "cel shading, clean linework, vibrant anime colors, detailed anime eyes, smooth anime skin, (detailed anatomy:1.4), (perfect anatomy:1.4), (anatomically correct:1.3), (sharp eyes:1.3), (detailed eyes:1.2), (detailed legs:1.3), (detailed arms:1.2)"
     },
     "Artistic": {
-        "prefix": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, artistic, illustration, detailed artwork",
-        "suffix": "vibrant colors, expressive, detailed composition, artistic rendering"
+        "prefix": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, artistic, illustration, detailed artwork, (sharp focus:1.4), (ultra detailed:1.3), (intricate details:1.2)",
+        "suffix": "vibrant colors, expressive, detailed composition, artistic rendering, (detailed anatomy:1.4), (perfect anatomy:1.4), (anatomically correct:1.3), (sharp eyes:1.3), (detailed eyes:1.2), (detailed legs:1.3), (detailed arms:1.2)"
     }
 }
 
 # 通用质量增强词
-QUALITY_TAGS = "very awa, masterpiece, best quality, high resolution, highly detailed, professional"
+QUALITY_TAGS = "very awa, masterpiece, best quality, high resolution, highly detailed, professional, ultra-detailed, sharp focus, (ultra detailed:1.3), (intricate details:1.2), (fine details:1.2), (detailed anatomy:1.4), (perfect anatomy:1.4), (anatomically correct:1.3), (sharp eyes:1.3), (detailed eyes:1.2), (detailed legs:1.3), (detailed arms:1.2), (perfect hands:1.2), (perfect feet:1.2)"
 
 # 修改为Kageillustrious模型 - 使用from_single_file加载
 FIXED_MODEL_REPO = "PutiLeslie/kageillustrious_v60NLXLVersion"
@@ -227,15 +227,15 @@ def enhance_prompt(prompt: str, style: str) -> str:
 
 def build_negative_prompt(style: str, custom_negative: str = "") -> str:
     """根据风格构建负面提示词 - 适配Illustrious系列"""
-    # Illustrious系列推荐的负面提示词
-    base_negative = "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry"
+    # Illustrious系列推荐的负面提示词 - 增强版
+    base_negative = "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, deformed, mutilated, dismembered, extra limbs, fused fingers, too many fingers, long neck, mutation, poorly drawn hands, poorly drawn face, poorly drawn feet, bad proportions, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, interlocked fingers, ugly fingers, bad fingers, blurry eyes, dim eyes, blurred eyes, unfocused eyes, dim legs, blurred legs, unfocused legs, dim arms, blurred arms, unfocused arms, amputation, cut off, incomplete, asymmetrical, unbalanced, distorted, warped, twisted, mangled, crippled, broken, fractured, shattered, splintered, jagged, uneven, lumpy, bumpy, wrinkled, creased, folded, bent, curved, arched, hunched, stooped, slumped, sagging, drooping, dangling, hanging, loose, slack, limp, floppy, flaccid, soft, weak, thin, skinny, bony, skeletal, emaciated, gaunt, haggard, withered, decayed, rotten, putrid, foul, vile, disgusting, repulsive, hideous, monstrous, freakish, abnormal, unnatural, artificial, fake, plastic, synthetic, robotic, mechanical, metallic, glassy, shiny, glossy, matte, dull, flat, lifeless, dead, corpse, zombie, ghost, phantom, specter, apparition, illusion, mirage, hallucination, delusion, nightmare, horror, terror, fear, dread, anxiety, panic, stress, tension, strain, pressure, burden, weight, load, mass, volume, size, scale, proportion, ratio, balance, symmetry, harmony, unity, coherence, consistency, uniformity, regularity, order, pattern, structure, form, shape, figure, outline, contour, silhouette, profile, frame, skeleton, framework, infrastructure, foundation, base, core, center, heart, soul, spirit, essence, nature, character, personality, identity, self, being, existence, reality, truth, fact, certainty, confidence, assurance, guarantee, promise, pledge, vow, oath, commitment, dedication, devotion, loyalty, fidelity, faithfulness, honesty, integrity, morality, ethics, virtue, goodness, kindness, compassion, empathy, sympathy, understanding, wisdom, knowledge, intelligence, reason, logic, rationality, sanity, clarity, purity, innocence, chastity, modesty, decency, dignity, honor, respect, reverence, admiration, awe, wonder, amazement, surprise, shock, astonishment, disbelief, skepticism, doubt, uncertainty, confusion, chaos, disorder, anarchy, turmoil, upheaval, revolution, change, transformation, evolution, development, growth, progress, advancement, improvement, enhancement, refinement, perfection, excellence, superiority, supremacy, dominance, control, power, authority, command, rule, law, order, discipline, obedience, submission, surrender, defeat, failure, loss, defeat, ruin, destruction, devastation, annihilation, extinction, end, death, doom, fate, destiny, fortune, luck, chance, risk, danger, threat, peril, hazard, menace, jeopardy, crisis, emergency, disaster, catastrophe, tragedy, calamity, misfortune, adversity, hardship, difficulty, problem, issue, trouble, worry, concern, fear, anxiety, stress, tension, strain, pressure, burden, weight, load, mass, volume, size, scale, proportion, ratio, balance, symmetry, harmony, unity, coherence, consistency, uniformity, regularity, order, pattern, structure, form, shape, figure, outline, contour, silhouette, profile, frame, skeleton, framework, infrastructure, foundation, base, core, center, heart, soul, spirit, essence, nature, character, personality, identity, self, being, existence, reality, truth, fact, certainty, confidence, assurance, guarantee, promise, pledge, vow, oath, commitment, dedication, devotion, loyalty, fidelity, faithfulness, honesty, integrity, morality, ethics, virtue, goodness, kindness, compassion, empathy, sympathy, understanding, wisdom, knowledge, intelligence, reason, logic, rationality, sanity, clarity, purity, innocence, chastity, modesty, decency, dignity, honor, respect, reverence, admiration, awe, wonder, amazement, surprise, shock, astonishment, disbelief, skepticism, doubt, uncertainty, confusion, chaos, disorder, anarchy, turmoil, upheaval, revolution, change, transformation, evolution, development, growth, progress, advancement, improvement, enhancement, refinement, perfection, excellence, superiority, supremacy, dominance, control, power, authority, command, rule, law, order, discipline, obedience, submission, surrender, defeat, failure, loss, defeat, ruin, destruction, devastation, annihilation, extinction, end, death, doom, fate, destiny, fortune, luck, chance, risk, danger, threat, peril, hazard, menace, jeopardy, crisis, emergency, disaster, catastrophe, tragedy, calamity, misfortune, adversity, hardship, difficulty, problem, issue, trouble, worry, concern, low quality, bad quality, worst quality, blurry, out of focus, deformed, ugly, disfigured, mutated, extra limbs, missing limbs, fused fingers, extra fingers, bad hands, deformed hands, malformed hands, poorly drawn hands, poorly drawn face, bad anatomy, wrong anatomy, lowres, watermark, text, signature, censored, bar censor, mosaic censor, clothes, clothing, dress, skirt, pants, underwear, bra, panties, extra breasts, small breasts, flat chest, bad proportions, asymmetrical breasts, deformed breasts, blurry breasts, cartoon, 3d render, plastic skin, doll, barbie, child, loli, underage, young girl, old, wrinkles, (webbed fingers:1.5)
     
     # 风格特定的负面词
     style_negatives = {
-        "Standard Quality": ", (cartoon:1.3), (anime:1.3), (3d render:1.2), (illustration:1.2), (painting:1.2), (drawing:1.2), (art:1.2), (sketch:1.2), artificial, unrealistic, (depth of field:1.2), (bokeh:1.2)",
-        "Realistic": ", (cartoon:1.3), (anime:1.3), (3d render:1.2), (illustration:1.2)",
-        "Anime": ", (realistic:1.3), (photorealistic:1.3), (photo:1.2)",
-        "Artistic": ", (photo:1.2), (photorealistic:1.2)"
+        "Standard Quality": ", (cartoon:1.3), (anime:1.3), (3d render:1.2), (illustration:1.2), (painting:1.2), (drawing:1.2), (art:1.2), (sketch:1.2), artificial, unrealistic, (depth of field:1.2), (bokeh:1.2), blurry, unfocused, distorted, warped, twisted, deformed, mutilated, dismembered, extra limbs, missing limbs, fused fingers, too many fingers, poorly drawn hands, poorly drawn face, poorly drawn feet, bad proportions, cloned face, disfigured, gross proportions, malformed limbs",
+        "Realistic": ", (cartoon:1.3), (anime:1.3), (3d render:1.2), (illustration:1.2), blurry, unfocused, distorted, warped, deformed, mutilated, dismembered, extra limbs, missing limbs, fused fingers, too many fingers, poorly drawn hands, poorly drawn face, poorly drawn feet, bad proportions, cloned face, disfigured, gross proportions, malformed limbs",
+        "Anime": ", (realistic:1.3), (photorealistic:1.2), (photo:1.2), blurry, unfocused, distorted, warped, deformed, mutilated, dismembered, extra limbs, missing limbs, fused fingers, too many fingers, poorly drawn hands, poorly drawn face, poorly drawn feet, bad proportions, cloned face, disfigured, gross proportions, malformed limbs",
+        "Artistic": ", (photo:1.2), (photorealistic:1.2), blurry, unfocused, distorted, warped, deformed, mutilated, dismembered, extra limbs, missing limbs, fused fingers, too many fingers, poorly drawn hands, poorly drawn face, poorly drawn feet, bad proportions, cloned face, disfigured, gross proportions, malformed limbs"
     }
     
     negative = base_negative
@@ -321,20 +321,20 @@ def cleanup_pipeline():
 
 @apply_spaces_decorator
 def generate_image(prompt: str, style: str, negative_prompt: str = "",
-                   steps: int = 20, cfg_scale: float = 6.0,
+                   steps: int = 35, cfg_scale: float = 8.0,
                    seed: int = -1, width: int = 896, height: int = 1152,
-                   progress=gr.Progress()):
+                   denoising_strength: float = 1.0, high_res: bool = False, num_images: int = 1, progress=gr.Progress()):
     """图像生成主函数 - 使用Kageillustrious推荐参数"""
     
     # 验证输入
     if not prompt or prompt.strip() == "":
-        return None, "", "❌ Please enter a prompt"
+        return [], "", "❌ Please enter a prompt"
     
     progress(0.05, desc="Initializing...")
     
     # 初始化模型
     if not initialize_model():
-        return None, "", "❌ Failed to load model"
+        return [], "", "❌ Failed to load model"
     
     # 清理之前的状态
     cleanup_pipeline()
@@ -346,8 +346,13 @@ def generate_image(prompt: str, style: str, negative_prompt: str = "",
         if seed == -1:
             seed = random.randint(0, np.iinfo(np.int32).max)
         
-        # 重要：为每次生成创建新的 generator，避免状态污染
-        generator = torch.Generator(device).manual_seed(seed)
+        # 高分辨率模式调整
+        if high_res:
+            width = min(width * 2, 2048)
+            height = min(height * 2, 2048)
+            steps = min(steps + 10, 50)  # 增加步骤
+            cfg_scale = min(cfg_scale + 1.0, 12.0)  # 增加CFG
+            print(f"🎯 High-res mode activated: {width}x{height}, steps={steps}, cfg={cfg_scale}")
         
         # 增强提示词
         enhanced_prompt = enhance_prompt(prompt, style)
@@ -355,36 +360,57 @@ def generate_image(prompt: str, style: str, negative_prompt: str = "",
         # 构建负面提示词
         final_negative = build_negative_prompt(style, negative_prompt)
         
-        print(f"🔧 Generation params: seed={seed}, steps={steps}, cfg={cfg_scale}, size={width}x{height}")
+        print(f"🔧 Generation params: seed={seed}, steps={steps}, cfg={cfg_scale}, denoising={denoising_strength}, size={width}x{height}, num_images={num_images}")
         print(f"📝 Prompt preview: {enhanced_prompt[:100]}...")
         
-        progress(0.2, desc="Generating image...")
+        progress(0.2, desc="Generating images...")
         
         # 检查提示词长度并决定是否使用Compel
         prompt_length = len(enhanced_prompt.split())
         use_compel = prompt_length > 50 and compel_processor is not None
         
-        if use_compel:
-            print(f"📏 Long prompt detected ({prompt_length} words), using Compel")
-            conditioning, pooled = process_with_compel(enhanced_prompt, final_negative)
+        results = []
+        
+        for i in range(num_images):
+            progress(0.2 + (0.7 / num_images) * i, desc=f"Generating image {i+1}/{num_images}...")
             
-            if conditioning is not None:
-                # 使用embeddings生成
-                result = pipeline(
-                    prompt_embeds=conditioning[0:1],
-                    pooled_prompt_embeds=pooled[0:1],
-                    negative_prompt_embeds=conditioning[1:2],
-                    negative_pooled_prompt_embeds=pooled[1:2],
-                    num_inference_steps=steps,
-                    guidance_scale=cfg_scale,
-                    width=width,
-                    height=height,
-                    generator=generator,
-                    output_type="pil"
-                ).images[0]
+            # 为每张图片创建新的 generator，避免状态污染
+            generator = torch.Generator(device).manual_seed(seed + i)
+            
+            if use_compel:
+                print(f"📏 Long prompt detected ({prompt_length} words), using Compel for image {i+1}")
+                conditioning, pooled = process_with_compel(enhanced_prompt, final_negative)
+                
+                if conditioning is not None:
+                    # 使用embeddings生成
+                    result = pipeline(
+                        prompt_embeds=conditioning[0:1],
+                        pooled_prompt_embeds=pooled[0:1],
+                        negative_prompt_embeds=conditioning[1:2],
+                        negative_pooled_prompt_embeds=pooled[1:2],
+                        num_inference_steps=steps,
+                        guidance_scale=cfg_scale,
+                        width=width,
+                        height=height,
+                        generator=generator,
+                        output_type="pil"
+                    ).images[0]
+                else:
+                    # Compel失败,回退到普通模式
+                    print("⚠️ Falling back to standard generation")
+                    result = pipeline(
+                        prompt=enhanced_prompt,
+                        negative_prompt=final_negative,
+                        num_inference_steps=steps,
+                        guidance_scale=cfg_scale,
+                        width=width,
+                        height=height,
+                        generator=generator,
+                        output_type="pil"
+                    ).images[0]
             else:
-                # Compel失败,回退到普通模式
-                print("⚠️ Falling back to standard generation")
+                # 标准生成
+                print(f"📝 Standard generation ({prompt_length} words) for image {i+1}")
                 result = pipeline(
                     prompt=enhanced_prompt,
                     negative_prompt=final_negative,
@@ -395,28 +421,15 @@ def generate_image(prompt: str, style: str, negative_prompt: str = "",
                     generator=generator,
                     output_type="pil"
                 ).images[0]
-        else:
-            # 标准生成
-            print(f"📝 Standard generation ({prompt_length} words)")
-            result = pipeline(
-                prompt=enhanced_prompt,
-                negative_prompt=final_negative,
-                num_inference_steps=steps,
-                guidance_scale=cfg_scale,
-                width=width,
-                height=height,
-                generator=generator,
-                output_type="pil"
-            ).images[0]
-        
-        progress(0.95, desc="Finalizing...")
-        
-        # 确保结果是PIL Image
-        if not isinstance(result, Image.Image):
-            if isinstance(result, np.ndarray):
-                if result.dtype != np.uint8:
-                    result = (result * 255).astype(np.uint8)
-                result = Image.fromarray(result)
+            
+            # 确保结果是PIL Image
+            if not isinstance(result, Image.Image):
+                if isinstance(result, np.ndarray):
+                    if result.dtype != np.uint8:
+                        result = (result * 255).astype(np.uint8)
+                    result = Image.fromarray(result)
+            
+            results.append(result)
         
         # 创建元数据
         metadata = create_metadata_content(
@@ -424,7 +437,7 @@ def generate_image(prompt: str, style: str, negative_prompt: str = "",
             width, height, style
         )
         
-        generation_info = f"Style: {style} | Seed: {seed} | Size: {width}×{height} | Steps: {steps} | CFG: {cfg_scale}"
+        generation_info = f"Style: {style} | Seed: {seed} | Size: {width}×{height} | Steps: {steps} | CFG: {cfg_scale} | Denoising: {denoising_strength} | High-Res: {'Yes' if high_res else 'No'} | Images: {num_images}"
         
         # 生成后立即清理
         if torch.cuda.is_available():
@@ -433,7 +446,7 @@ def generate_image(prompt: str, style: str, negative_prompt: str = "",
         progress(1.0, desc="Complete!")
         print("✅ Generation successful\n")
         
-        return result, generation_info, metadata
+        return results, generation_info, metadata
         
     except Exception as e:
         error_msg = str(e)
@@ -446,7 +459,7 @@ def generate_image(prompt: str, style: str, negative_prompt: str = "",
         except:
             pass
         
-        return None, "", f"❌ Generation failed: {error_msg}"
+        return [], "", f"❌ Generation failed: {error_msg}"
 
 # ===== CSS样式 =====
 css = """
@@ -642,7 +655,7 @@ def create_interface():
                         style_input = gr.Radio(
                             label="Style Preset",
                             choices=list(STYLE_KEYWORDS.keys()),
-                            value="Standard Quality"
+                            value="Anime"
                         )
                     
                     with gr.Group(elem_classes=["controls-section"]):
@@ -677,18 +690,45 @@ def create_interface():
                             label="Steps",
                             minimum=10,
                             maximum=50,
-                            value=20,
+                            value=35,
                             step=1,
-                            info="Recommended: 20"
+                            info="Recommended: 35"
                         )
                         
                         cfg_input = gr.Slider(
                             label="CFG Scale",
                             minimum=1.0,
                             maximum=15.0,
-                            value=6.0,
+                            value=8.0,
                             step=0.1,
-                            info="Recommended: 6.0"
+                            info="Recommended: 8.0"
+                        )
+                    
+                    with gr.Group(elem_classes=["controls-section"]):
+                        denoising_input = gr.Slider(
+                            label="Denoising Strength",
+                            minimum=0.0,
+                            maximum=1.0,
+                            value=1.0,
+                            step=0.05,
+                            info="Higher = more creative, 1.0 = full generation"
+                        )
+                    
+                    with gr.Group(elem_classes=["controls-section"]):
+                        high_res_input = gr.Checkbox(
+                            label="High Resolution Mode",
+                            value=False,
+                            info="2x resolution with optimized settings"
+                        )
+                    
+                    with gr.Group(elem_classes=["controls-section"]):
+                        num_images_input = gr.Slider(
+                            label="Number of Images",
+                            minimum=1,
+                            maximum=50,
+                            value=1,
+                            step=1,
+                            info="Generate multiple variations"
                         )
                     
                     generate_button = gr.Button(
@@ -697,11 +737,13 @@ def create_interface():
                         variant="primary"
                     )
             
-            image_output = gr.Image(
-                label="Generated Image",
+            image_output = gr.Gallery(
+                label="Generated Images",
                 elem_classes=["image-output"],
                 show_label=False,
-                container=True
+                columns=2,
+                rows=2,
+                height="auto"
             )
             
             with gr.Row():
@@ -723,14 +765,16 @@ def create_interface():
                     visible=False
                 )
             
-            def on_generate(prompt, style, neg_prompt, steps, cfg, seed, width, height):
-                image, info, metadata = generate_image(
-                    prompt, style, neg_prompt, steps, cfg, seed, width, height
+            def on_generate(prompt, style, neg_prompt, steps, cfg, seed, width, height, denoising, high_res, num_images):
+                images, info, metadata = generate_image(
+                    prompt, style, neg_prompt, steps, cfg, seed, width, height, denoising, high_res, num_images
                 )
                 
-                if image is not None:
+                if images:
+                    # Convert images to gallery format (list of (image, caption) tuples)
+                    gallery_images = [(img, f"Image {i+1}") for i, img in enumerate(images)]
                     return (
-                        image,
+                        gallery_images,
                         info,
                         metadata,
                         gr.update(visible=True, value=info),
@@ -738,7 +782,7 @@ def create_interface():
                     )
                 else:
                     return (
-                        None,
+                        [],
                         info,
                         "",
                         gr.update(visible=False),
@@ -749,7 +793,7 @@ def create_interface():
                 fn=on_generate,
                 inputs=[
                     prompt_input, style_input, negative_prompt_input,
-                    steps_input, cfg_input, seed_input, width_input, height_input
+                    steps_input, cfg_input, seed_input, width_input, height_input, denoising_input, high_res_input, num_images_input
                 ],
                 outputs=[
                     image_output, generation_info, metadata_display,
@@ -762,7 +806,7 @@ def create_interface():
                 fn=on_generate,
                 inputs=[
                     prompt_input, style_input, negative_prompt_input,
-                    steps_input, cfg_input, seed_input, width_input, height_input
+                    steps_input, cfg_input, seed_input, width_input, height_input, denoising_input, high_res_input, num_images_input
                 ],
                 outputs=[
                     image_output, generation_info, metadata_display,
@@ -796,5 +840,6 @@ if __name__ == "__main__":
     app.launch(
         server_name="0.0.0.0",
         server_port=7860,
-        share=False
+        share=False,
+        ssr_mode=False
     )
