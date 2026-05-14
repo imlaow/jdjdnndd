@@ -2,31 +2,34 @@
 try:
     import spaces
     SPACES_AVAILABLE = True
-    print("✅ Spaces available - ZeroGPU mode")
 except ImportError:
     SPACES_AVAILABLE = False
-    print("⚠️ Spaces not available - running in regular mode")
 
 # ===== 其他导入 =====
 import os
+import sys
 import uuid
 from datetime import datetime
 import random
-import torch
-import gradio as gr
-from diffusers import StableDiffusionXLPipeline, EulerDiscreteScheduler
-from PIL import Image
-import traceback
-import numpy as np
+
+# Core ML imports with error handling
+try:
+    import torch
+    import gradio as gr
+    from diffusers import StableDiffusionXLPipeline, EulerDiscreteScheduler
+    from PIL import Image
+    import traceback
+    import numpy as np
+except ImportError as e:
+    print(f"Error importing core libraries: {e}")
+    sys.exit(1)
 
 # ===== 长提示词处理 =====
 try:
     from compel import Compel, ReturnedEmbeddingsType
     COMPEL_AVAILABLE = True
-    print("✅ Compel available for long prompt processing")
 except ImportError:
     COMPEL_AVAILABLE = False
-    print("⚠️ Compel not available - using standard prompt processing")
 
 # ===== 优化后的配置 =====
 # Kageillustrious风格核心关键词 - 使用Danbooru标签风格
@@ -226,16 +229,33 @@ def enhance_prompt(prompt: str, style: str) -> str:
     return enhanced
 
 def build_negative_prompt(style: str, custom_negative: str = "") -> str:
-    """根据风格构建负面提示词 - 适配Illustrious系列"""
-    # Illustrious系列推荐的负面提示词 - 增强版
-    base_negative = "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, deformed, mutilated, dismembered, extra limbs, fused fingers, too many fingers, long neck, mutation, poorly drawn hands, poorly drawn face, poorly drawn feet, bad proportions, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, interlocked fingers, ugly fingers, bad fingers, blurry eyes, dim eyes, blurred eyes, unfocused eyes, dim legs, blurred legs, unfocused legs, dim arms, blurred arms, unfocused arms, amputation, cut off, incomplete, asymmetrical, unbalanced, distorted, warped, twisted, mangled, crippled, broken, fractured, shattered, splintered, jagged, uneven, lumpy, bumpy, wrinkled, creased, folded, bent, curved, arched, hunched, stooped, slumped, sagging, drooping, dangling, hanging, loose, slack, limp, floppy, flaccid, soft, weak, thin, skinny, bony, skeletal, emaciated, gaunt, haggard, withered, decayed, rotten, putrid, foul, vile, disgusting, repulsive, hideous, monstrous, freakish, abnormal, unnatural, artificial, fake, plastic, synthetic, robotic, mechanical, metallic, glassy, shiny, glossy, matte, dull, flat, lifeless, dead, corpse, zombie, ghost, phantom, specter, apparition, illusion, mirage, hallucination, delusion, nightmare, horror, terror, fear, dread, anxiety, panic, stress, tension, strain, pressure, burden, weight, load, mass, volume, size, scale, proportion, ratio, balance, symmetry, harmony, unity, coherence, consistency, uniformity, regularity, order, pattern, structure, form, shape, figure, outline, contour, silhouette, profile, frame, skeleton, framework, infrastructure, foundation, base, core, center, heart, soul, spirit, essence, nature, character, personality, identity, self, being, existence, reality, truth, fact, certainty, confidence, assurance, guarantee, promise, pledge, vow, oath, commitment, dedication, devotion, loyalty, fidelity, faithfulness, honesty, integrity, morality, ethics, virtue, goodness, kindness, compassion, empathy, sympathy, understanding, wisdom, knowledge, intelligence, reason, logic, rationality, sanity, clarity, purity, innocence, chastity, modesty, decency, dignity, honor, respect, reverence, admiration, awe, wonder, amazement, surprise, shock, astonishment, disbelief, skepticism, doubt, uncertainty, confusion, chaos, disorder, anarchy, turmoil, upheaval, revolution, change, transformation, evolution, development, growth, progress, advancement, improvement, enhancement, refinement, perfection, excellence, superiority, supremacy, dominance, control, power, authority, command, rule, law, order, discipline, obedience, submission, surrender, defeat, failure, loss, defeat, ruin, destruction, devastation, annihilation, extinction, end, death, doom, fate, destiny, fortune, luck, chance, risk, danger, threat, peril, hazard, menace, jeopardy, crisis, emergency, disaster, catastrophe, tragedy, calamity, misfortune, adversity, hardship, difficulty, problem, issue, trouble, worry, concern, fear, anxiety, stress, tension, strain, pressure, burden, weight, load, mass, volume, size, scale, proportion, ratio, balance, symmetry, harmony, unity, coherence, consistency, uniformity, regularity, order, pattern, structure, form, shape, figure, outline, contour, silhouette, profile, frame, skeleton, framework, infrastructure, foundation, base, core, center, heart, soul, spirit, essence, nature, character, personality, identity, self, being, existence, reality, truth, fact, certainty, confidence, assurance, guarantee, promise, pledge, vow, oath, commitment, dedication, devotion, loyalty, fidelity, faithfulness, honesty, integrity, morality, ethics, virtue, goodness, kindness, compassion, empathy, sympathy, understanding, wisdom, knowledge, intelligence, reason, logic, rationality, sanity, clarity, purity, innocence, chastity, modesty, decency, dignity, honor, respect, reverence, admiration, awe, wonder, amazement, surprise, shock, astonishment, disbelief, skepticism, doubt, uncertainty, confusion, chaos, disorder, anarchy, turmoil, upheaval, revolution, change, transformation, evolution, development, growth, progress, advancement, improvement, enhancement, refinement, perfection, excellence, superiority, supremacy, dominance, control, power, authority, command, rule, law, order, discipline, obedience, submission, surrender, defeat, failure, loss, defeat, ruin, destruction, devastation, annihilation, extinction, end, death, doom, fate, destiny, fortune, luck, chance, risk, danger, threat, peril, hazard, menace, jeopardy, crisis, emergency, disaster, catastrophe, tragedy, calamity, misfortune, adversity, hardship, difficulty, problem, issue, trouble, worry, concern, low quality, bad quality, worst quality, blurry, out of focus, deformed, ugly, disfigured, mutated, extra limbs, missing limbs, fused fingers, extra fingers, bad hands, deformed hands, malformed hands, poorly drawn hands, poorly drawn face, bad anatomy, wrong anatomy, lowres, watermark, text, signature, censored, bar censor, mosaic censor, clothes, clothing, dress, skirt, pants, underwear, bra, panties, extra breasts, small breasts, flat chest, bad proportions, asymmetrical breasts, deformed breasts, blurry breasts, cartoon, 3d render, plastic skin, doll, barbie, child, loli, underage, young girl, old, wrinkles, (webbed fingers:1.5)
+    """构建负面提示词 - 使用三引号避免超长字符串问题"""
+    # 使用三引号处理超长字符串，避免SyntaxError
+    base_negative = """
+    lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, 
+    fewer digits, cropped, worst quality, low quality, normal quality, 
+    jpeg artifacts, signature, watermark, username, blurry, (webbed fingers:1.5), 
+    fused fingers, too many fingers, mutation, poorly drawn hands, 
+    poorly drawn face, bad proportions, disfigured, malformed limbs, 
+    missing arms, missing legs, extra arms, extra legs, lowres, 
+    censored, bar censor, mosaic censor, clothes, clothing, 
+    (deformed iris, deformed pupils:1.2), (unfocused eyes:1.2),
+    mutilated, dismembered, interlocked fingers, deformed, distorted, warped, twisted,
+    anatomically incorrect, anatomically impossible, impossible anatomy, bad anatomy,
+    nsfw, nude, naked, breasts, penis, vagina, intercourse, sex, sexual content,
+    child, loli, underage, young, toddler, lolita, lolicon, shotacon, flat chest,
+    photorealistic, realistic, 3d, 3d render, cg, computer graphics
+    """
+    
+    # 清理多余空格和换行符
+    base_negative = " ".join(base_negative.split())
     
     # 风格特定的负面词
     style_negatives = {
-        "Standard Quality": ", (cartoon:1.3), (anime:1.3), (3d render:1.2), (illustration:1.2), (painting:1.2), (drawing:1.2), (art:1.2), (sketch:1.2), artificial, unrealistic, (depth of field:1.2), (bokeh:1.2), blurry, unfocused, distorted, warped, twisted, deformed, mutilated, dismembered, extra limbs, missing limbs, fused fingers, too many fingers, poorly drawn hands, poorly drawn face, poorly drawn feet, bad proportions, cloned face, disfigured, gross proportions, malformed limbs",
-        "Realistic": ", (cartoon:1.3), (anime:1.3), (3d render:1.2), (illustration:1.2), blurry, unfocused, distorted, warped, deformed, mutilated, dismembered, extra limbs, missing limbs, fused fingers, too many fingers, poorly drawn hands, poorly drawn face, poorly drawn feet, bad proportions, cloned face, disfigured, gross proportions, malformed limbs",
-        "Anime": ", (realistic:1.3), (photorealistic:1.2), (photo:1.2), blurry, unfocused, distorted, warped, deformed, mutilated, dismembered, extra limbs, missing limbs, fused fingers, too many fingers, poorly drawn hands, poorly drawn face, poorly drawn feet, bad proportions, cloned face, disfigured, gross proportions, malformed limbs",
-        "Artistic": ", (photo:1.2), (photorealistic:1.2), blurry, unfocused, distorted, warped, deformed, mutilated, dismembered, extra limbs, missing limbs, fused fingers, too many fingers, poorly drawn hands, poorly drawn face, poorly drawn feet, bad proportions, cloned face, disfigured, gross proportions, malformed limbs"
+        "Standard Quality": ", (cartoon:1.3), (anime:1.3), (illustration:1.2), (painting:1.2), artificial, unrealistic",
+        "Realistic": ", (cartoon:1.3), (anime:1.3), (3d render:1.2), (illustration:1.2)",
+        "Anime": ", (realistic:1.3), (photorealistic:1.2), (photo:1.2)",
+        "Artistic": ", (photo:1.2), (photorealistic:1.2)"
     }
     
     negative = base_negative
@@ -819,27 +839,32 @@ def create_interface():
 
 # ===== 启动应用 =====
 if __name__ == "__main__":
-    print("\n" + "="*50)
-    print("🚀 Starting ADULT AI Image Generator (YAOI Friendly) ")
-    print("="*50)
-    print(f"📦 Model: {FIXED_MODEL_REPO}")
-    print(f"📄 Model File: {FIXED_MODEL_FILE}")
-    print(f"🖥️ Device: {'CUDA' if torch.cuda.is_available() else 'CPU'}")
-    print(f"⚡ ZeroGPU: {'Enabled' if SPACES_AVAILABLE else 'Disabled'}")
-    print(f"📝 Compel: {'Available' if COMPEL_AVAILABLE else 'Not Available'}")
-    if LORA_CONFIGS:
-        print(f"🎨 LoRA: LogoRedmond-LogoLoraForSDXL-V2 (scale: {LORA_CONFIGS[0].get('scale', 0.8)})")
-    print("="*50 + "\n")
+    import sys
+    print("\n" + "="*60)
+    print("🎨 ADULT AI Image Generator - Starting...")
+    print("="*60)
+    print(f"Model: {FIXED_MODEL_REPO}")
+    print(f"Device: {'CUDA' if torch.cuda.is_available() else 'CPU'}")
+    print(f"ZeroGPU: {'Enabled' if SPACES_AVAILABLE else 'Disabled'}")
+    print(f"Compel: {'Available' if COMPEL_AVAILABLE else 'Not Available'}")
+    print("="*60)
+    print("\n📍 Access the app at: http://localhost:7860")
+    print("Press Ctrl+C to stop the server\n")
     
-    # 不预加载模型,让ZeroGPU按需分配
-    # 这样可以避免GPU分配冲突
-    
-    app = create_interface()
-    app.queue(max_size=10, default_concurrency_limit=2)
-    
-    app.launch(
-        server_name="0.0.0.0",
-        server_port=7860,
-        share=False,
-        ssr_mode=False
-    )
+    try:
+        app = create_interface()
+        app.queue(max_size=10, default_concurrency_limit=2)
+        app.launch(
+            server_name="0.0.0.0",
+            server_port=7860,
+            share=False,
+            ssr_mode=False
+        )
+    except KeyboardInterrupt:
+        print("\n\nServer stopped by user.")
+        sys.exit(0)
+    except Exception as e:
+        print(f"\n❌ Error: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
