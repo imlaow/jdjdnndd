@@ -285,7 +285,7 @@ def process_with_compel(prompt, negative_prompt):
 def apply_spaces_decorator(func):
     """应用spaces装饰器"""
     if SPACES_AVAILABLE:
-        return spaces.GPU(duration=45)(func)
+        return spaces.GPU(duration=90)(func)
     return func
 
 def create_metadata_content(prompt, enhanced_prompt, seed, steps, cfg_scale, width, height, style):
