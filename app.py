@@ -128,6 +128,14 @@ def initialize_model():
         
         pipeline = pipeline.to(device)
         
+        # 针对 Colab T4 16GB 显存的优化
+        try:
+            pipeline.enable_model_cpu_offload()
+            pipeline.enable_vae_slicing()
+            print("✅ Memory optimizations enabled (CPU offload & VAE slicing)")
+        except Exception as e:
+            print(f"⚠️ Could not enable memory optimizations: {e}")
+            
         # 加载 LoRA
         print("🎨 Loading LoRA models...")
         adapter_names = []
@@ -857,7 +865,7 @@ if __name__ == "__main__":
         app.launch(
             server_name="0.0.0.0",
             server_port=7860,
-            share=False,
+            share=True,
             ssr_mode=False
         )
     except KeyboardInterrupt:
